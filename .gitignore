@@ -10,3 +10,255 @@
 *.lai
 *.la
 *.a
+
+/*Nama File       : OpenGLKelompok9.cpp
+  Team Programmer : Ahmad Mugeni (10108493)
+                    M.Lutfi Azhar (10108497)
+                    Yudie Rusmayudi (10108486)
+         	        Yuni Sopiawati (10108491)
+  Kelas            : IF-10
+  Deskripsi       : Tugas OPEN GL*/
+
+#include <windows.h>
+#include <gl/glut.h>
+
+/* Deklarasi Fungsi */
+
+LRESULT CALLBACK WndProc (HWND hWnd, UINT message,
+WPARAM wParam, LPARAM lParam);
+void EnableOpenGL (HWND hWnd, HDC *hDC, HGLRC *hRC);
+void DisableOpenGL (HWND hWnd, HDC hDC, HGLRC hRC);
+
+
+/* Jendela Utama */
+
+int WINAPI WinMain (HINSTANCE hInstance,
+                    HINSTANCE hPrevInstance,
+                    LPSTR lpCmdLine,
+                    int iCmdShow)
+{
+    WNDCLASS wc;
+    HWND hWnd;
+    HDC hDC;
+    HGLRC hRC;        
+    MSG msg;
+    BOOL bQuit = FALSE;
+    float theta = 0.0f;
+
+    /* Memasukan Kelas "Windows" */
+    wc.style = CS_OWNDC;
+    wc.lpfnWndProc = WndProc;
+    wc.cbClsExtra = 0;
+    wc.cbWndExtra = 0;
+    wc.hInstance = hInstance;
+    wc.hIcon = LoadIcon (NULL, IDI_APPLICATION);
+    wc.hCursor = LoadCursor (NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH) GetStockObject (BLACK_BRUSH);
+    wc.lpszMenuName = NULL;
+    wc.lpszClassName = "GLSample";
+    RegisterClass (&wc);
+
+    /* Membuat Jendela Utama */
+    hWnd = CreateWindow (
+      "GLSample", "OpenGL Kelompok 9", 
+      WS_CAPTION | WS_POPUPWINDOW | WS_VISIBLE,
+      0, 0, 600, 600,
+      NULL, NULL, hInstance, NULL);
+
+    /* Memperbolehkan OpenGL untuk "Window" */
+    EnableOpenGL (hWnd, &hDC, &hRC);
+
+   
+    while (!bQuit)
+    {
+        
+        if (PeekMessage (&msg, NULL, 0, 0, PM_REMOVE))
+        {
+            
+            if (msg.message == WM_QUIT)
+            {
+                bQuit = TRUE;
+            }
+            else
+            {
+                TranslateMessage (&msg);
+                DispatchMessage (&msg);
+            }
+        }
+        else
+        {
+                      
+            glClearColor (1.0f, 1.0f, 1.0f, 0.0f);
+            glClear (GL_COLOR_BUFFER_BIT);
+
+            glPushMatrix ();
+            
+            glBegin (GL_LINES);
+            glColor3f (0.0f, 0.0f, 0.0f);   glVertex2f (0.35f, 1.0f);
+            glColor3f (0.0f, 0.0f, 0.0f);   glVertex2f (0.35f, -1.0f);
+            
+            glColor3f (0.0f, 0.0f, 0.0f);   glVertex2f (-0.35f, 1.f);
+            glColor3f (0.0f, 0.0f, 0.0f);   glVertex2f (-0.35f, -1.0f);
+            
+            glColor3f (0.0f, 0.0f, 0.0f);   glVertex2f (1.0f, 0.35f);
+            glColor3f (0.0f, 0.0f, 0.0f);   glVertex2f (-1.0f,0.35f);
+            
+            glColor3f (0.0f, 0.0f, 0.0f);   glVertex2f (1.0f, -0.35f);
+            glColor3f (0.0f, 0.0f, 0.0f);   glVertex2f (-1.0f, -0.35f);
+            glEnd ();
+            
+            glBegin(GL_QUADS); /* 1. kotak / segi 4 */
+            glColor3f (0.5f,0.1f,0.2f); glVertex2f(0.9f,0.4f);
+            glColor3f (0.2f,0.1f,0.2f); glVertex2f(0.8f,0.7f);
+            glColor3f (0.2f,0.1f,0.2f); glVertex2f(0.6f,0.7f);
+            glColor3f (0.5f,0.1f,0.2f); glVertex2f(0.4f,0.4f);
+            glEnd();
+            
+            glBegin(GL_TRIANGLES);/* 2. Segitiga Siku-siku */
+            glColor3f (0.2f,0.3f,0.3f); glVertex2f(-0.3f,0.4f);
+            glColor3f (0.2f,0.3f,0.3f); glVertex2f(-0.3f,0.9f);
+            glColor3f (0.7f,0.3f,0.3f); glVertex2f(0.3f,0.4f);
+            glEnd();
+
+            
+            glBegin(GL_TRIANGLES);/* 3. Segitiga */
+            glColor3f (0.2f,0.7f,0.4f); glVertex2f(-0.9f,0.4f);
+            glColor3f (0.3f,0.4f,0.1f); glVertex2f(-0.4f,0.4f);
+            glColor3f (0.3f,0.7f,0.1f); glVertex2f(-0.65f,0.9f);
+            glEnd();
+                 
+            glBegin(GL_QUADS);/* 4. Trapesium */
+            glColor3f (1.2f,0.4f,0.4f); glVertex2f(-0.4f,-0.25f);
+            glColor3f (1.2f,0.8f,0.4f); glVertex2f(-0.9f,-0.25f);
+            glColor3f (1.0f,0.4f,0.4f); glVertex2f(-0.9f,0.25f);
+            glColor3f (1.0f,0.4f,0.4f); glVertex2f(-0.6f,0.25f);
+            glEnd();   
+                   
+            glBegin(GL_QUADS);/* 5. Belah Ketupat */
+            glColor3f (0.4f,0.5f,1.7f); glVertex2f(0.3f,0.0f);
+            glColor3f (0.4f,0.0f,6.7f); glVertex2f(0.0f,0.3f);
+            glColor3f (0.4f,0.5f,6.7f); glVertex2f(-0.3f,0.0f);
+            glColor3f (0.4f,0.0f,1.7f); glVertex2f(0.0f,-0.3f);
+            glEnd();
+            
+            glBegin(GL_QUADS);/* 6. Jajar Genjang */
+            glColor3f (0.1f,0.4f,0.3f); glVertex2f(0.7f,-0.3f);
+            glColor3f (0.1f,0.5f,0.0f); glVertex2f(0.9f,0.2f);
+            glColor3f (0.1f,0.5f,0.3f); glVertex2f(0.6f,0.2f);
+            glColor3f (0.1f,0.2f,0.0f); glVertex2f(0.4f,-0.2f);
+            glEnd();
+                       
+            glBegin(GL_QUADS); /* 7. Frame */
+            glColor3f (1.5f,0.3f,0.4f); glVertex2f(0.9f,-0.4f);
+            glColor3f (1.5f,0.6f,0.4f); glVertex2f(0.9f,-0.9f);
+            glColor3f (1.2f,0.9f,0.3f); glVertex2f(0.4f,-0.9f);
+            glColor3f (1.2f,0.9f,0.3f); glVertex2f(0.4f,-0.4f);
+            glEnd();
+                       
+            glBegin(GL_POLYGON); /* 8. Segi 6 */
+            glColor3f (0.7f,0.5f,1); glVertex2f(-0.15f,-0.4f);
+            glColor3f (0.7f,0.5f,1); glVertex2f(-0.3f,-0.65f);
+            glColor3f (0.4f,0.5f,1); glVertex2f(-0.15f,-0.9f);
+            glColor3f (0.4f,0.5f,1); glVertex2f(0.15f,-0.9f);
+            glColor3f (0.4f,0.5f,1); glVertex2f(0.3f,-0.65f);
+            glColor3f (0.7f,0.5f,1); glVertex2f(0.15f,-0.4f);
+            glEnd();
+            
+            glBegin(GL_POLYGON);/* 9.Segi 5 */
+            glColor3f (1.9f,0.2f,0.1f); glVertex2f(-0.7f,-0.4f);
+            glColor3f (1.9f,0.2f,0.1f); glVertex2f(-0.5f,-0.6f);
+            glColor3f (1.0f,0.5f,0.2f); glVertex2f(-0.5f,-0.9f);
+            glColor3f (1.0f,0.0f,0.1f); glVertex2f(-0.9f,-0.9f);
+            glColor3f (1.0f,0.0f,0.1f); glVertex2f(-0.9f,-0.6f);
+            
+            glEnd();
+            
+            glPopMatrix ();
+
+            SwapBuffers (hDC);
+
+            
+            Sleep (1);
+        }
+    }
+
+    
+    DisableOpenGL (hWnd, hDC, hRC);
+
+    
+    DestroyWindow (hWnd);
+
+    return msg.wParam;
+}
+
+
+/* Prosedure Window */
+
+LRESULT CALLBACK WndProc (HWND hWnd, UINT message,
+                          WPARAM wParam, LPARAM lParam)
+{
+
+    switch (message)
+    {
+    case WM_CREATE:
+        return 0;
+    case WM_CLOSE:
+        PostQuitMessage (0);
+        return 0;
+
+    case WM_DESTROY:
+        return 0;
+
+    case WM_KEYDOWN:
+        switch (wParam)
+        {
+        case VK_ESCAPE:
+            PostQuitMessage(0);
+            return 0;
+        }
+        return 0;
+
+    default:
+        return DefWindowProc (hWnd, message, wParam, lParam);
+    }
+}
+
+
+/* Mengaktifkan OpenGL */
+
+void EnableOpenGL (HWND hWnd, HDC *hDC, HGLRC *hRC)
+{
+    PIXELFORMATDESCRIPTOR pfd;
+    int iFormat;
+
+    
+    *hDC = GetDC (hWnd);
+
+   
+    ZeroMemory (&pfd, sizeof (pfd));
+    pfd.nSize = sizeof (pfd);
+    pfd.nVersion = 1;
+    pfd.dwFlags = PFD_DRAW_TO_WINDOW | 
+      PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+    pfd.iPixelType = PFD_TYPE_RGBA;
+    pfd.cColorBits = 24;
+    pfd.cDepthBits = 16;
+    pfd.iLayerType = PFD_MAIN_PLANE;
+    iFormat = ChoosePixelFormat (*hDC, &pfd);
+    SetPixelFormat (*hDC, iFormat, &pfd);
+
+    
+    *hRC = wglCreateContext( *hDC );
+    wglMakeCurrent( *hDC, *hRC );
+
+}
+
+
+/* Melarang OpenGL */
+
+void DisableOpenGL (HWND hWnd, HDC hDC, HGLRC hRC)
+{
+    wglMakeCurrent (NULL, NULL);
+    wglDeleteContext (hRC);
+    ReleaseDC (hWnd, hDC);
+}
